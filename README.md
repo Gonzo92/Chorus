@@ -107,7 +107,7 @@ All defaults are in `config.py`. The GUI overrides these at runtime — no need 
 | `IDLE_SECONDS` | 5 | Wait between cycles |
 | `CALL_SECONDS` | 15 | Call window duration |
 | `CALL_END_WAIT` | 3 | Grace period after hang-up |
-| `DRY_RUN` | `True` | Simulate ADB (no real devices needed) |
+
 
 ---
 
