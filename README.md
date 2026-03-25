@@ -46,8 +46,7 @@ python main.py
 1. Click **🔌 Pick Devices** — scans ADB and lets you assign MO/MT roles to each pair
 2. Enter phone numbers for each pair
 3. Set loop count and timing
-4. Uncheck **DRY_RUN** for live mode
-5. Click **▶ Start Test**
+4. Click **▶ Start Test**
 
 ---
 
