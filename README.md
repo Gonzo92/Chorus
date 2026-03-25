@@ -20,7 +20,8 @@ Chorus runs two device pairs simultaneously in separate threads, monitors call s
 
 ## Screenshots
 
-> *Add a screenshot of the dashboard here*
+> <img width="1049" height="779" alt="{34CBE4A3-DF58-43B6-80F9-FD47F3AFC7A4}" src="https://github.com/user-attachments/assets/f8b131c6-acd3-4eef-b4b5-1fd1be78dea3" />
+
 
 ---
 
