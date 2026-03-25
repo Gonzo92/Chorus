@@ -1,70 +1,121 @@
-# Call Automator v1.0
+# 📡 Chorus
 
-Automated voice-call tester for Android devices over ADB.
-Runs two device pairs in parallel threads with a Rich terminal dashboard.
+**Automated parallel voice call testing tool for Android devices over ADB.**
+
+Chorus runs two device pairs simultaneously in separate threads, monitors call state in real time, and logs every result to CSV — replacing tedious manual call testing.
 
 ---
 
-## Directory layout
+## Features
 
-```
-call_automator/
-├── config.py          ← edit this before each session
-├── adb_controller.py
-├── sdm_logger.py
-├── report.py
-├── call_monitor.py
-├── main.py
-└── logs/
-    ├── exynos/        ← SDM pulls land here
-    ├── mediatek/      ← reserved for future use
-    └── results.csv    ← created automatically on first run
-```
+- 🔌 **ADB device scanner** — detects connected devices and lets you assign roles via GUI
+- 📞 **Parallel execution** — two pairs run independently, each in its own thread
+- ⏱️ **Live countdown** — per-second stage timer (IDLE → CALLING → ACTIVE → result)
+- ✅ **Pass/Fail detection** — reads `dumpsys telephony.registry` to verify call state
+- 📊 **CSV reporting** — every cycle timestamped and logged automatically
+- 🌙 **Dark-mode GUI** — built with tkinter, no external UI dependencies
+- 🧪 **Dry-run mode** — simulate full test runs without physical devices
+
+---
+
+## Screenshots
+
+> *Add a screenshot of the dashboard here*
+
+---
 
 ## Requirements
 
-```
-pip install rich
-```
-Python 3.10+ (uses `X | Y` union types and `match`).
+- Python 3.10+
+- `adb` available in system PATH
+- Android devices with USB debugging enabled
+
+No third-party Python packages required — stdlib only.
+
+---
 
 ## Quick start
 
-1. Connect all 4 devices via USB and authorise ADB.
-2. Edit `config.py` – set `DEVICES`, `PHONE_NUMBERS`, and `DRY_RUN=False`.
-3. Run:
-   ```
-   cd call_automator
-   python main.py
-   ```
+```bash
+git clone https://github.com/Gonzo92/Chorus.git
+cd Chorus
+python main.py
+```
 
-## Dry-run mode
+1. Click **🔌 Pick Devices** — scans ADB and lets you assign MO/MT roles to each pair
+2. Enter phone numbers for each pair
+3. Set loop count and timing
+4. Uncheck **DRY_RUN** for live mode
+5. Click **▶ Start Test**
 
-`DRY_RUN=True` (default) simulates all ADB calls with random but realistic values.
-No devices required. Useful for UI / CI testing.
-
-## Pair definitions
-
-| Key          | Role | Chipset   |
-|--------------|------|-----------|
-| `exynos_MO`  | DUT  | Exynos    |
-| `exynos_MT`  | DUT  | Exynos    |
-| `ref_MO`     | REF  | MediaTek  |
-| `ref_MT`     | REF  | MediaTek  |
-
-Direction is hard-coded: **MO always dials MT** in every cycle.
+---
 
 ## Call cycle
 
 ```
-IDLE (5 s) → start_call (MO) → answer_call (MT)
-          → wait CALL_SECONDS → check call state
-          → PASS (OFFHOOK) | FAIL (IDLE/DROPPED)
-          → end_call both sides → log CSV → [SDM pull if threshold]
-          → repeat
+IDLE (5s) → CALLING (MO dials MT) → RINGING (2s) → ANSWERING
+         → ACTIVE (15s) → CHECK state → PASS / FAIL
+         → HANG UP → next cycle
 ```
 
-## CSV columns
+- **PASS** — both devices in OFFHOOK state after call window
+- **FAIL** — DROPPED (call ended early) or ADB_ERROR / NO_ANSWER
 
-`timestamp, pair, dut_mo_serial, dut_mt_serial, cycle, result, error_type,
- duration_ms, rat, rsrp, rsrq, sinr, scg_state, sdm_file`
+---
+
+## Output
+
+Results saved to `logs/results.csv`:
+
+| Field | Description |
+|---|---|
+| `timestamp` | ISO-8601 datetime of the attempt |
+| `pair` | `pair_a` or `pair_b` |
+| `mo_serial` | Serial of the calling device |
+| `mt_serial` | Serial of the answering device |
+| `cycle` | Cycle index (1-based) |
+| `result` | `PASS` or `FAIL` |
+| `error_type` | `DROPPED` / `NO_ANSWER` / `ADB_ERROR` |
+| `duration_ms` | Measured call duration in ms |
+
+---
+
+## Project structure
+
+```
+Chorus/
+├── main.py            # GUI dashboard + thread orchestration
+├── config.py          # Default parameters
+├── adb_controller.py  # ADB wrappers (start/end/answer call, signal info)
+├── call_monitor.py    # Single cycle logic with live countdown callbacks
+├── device_picker.py   # ADB scanner + role assignment dialog
+├── report.py          # CSV init and logging
+└── logs/
+    └── results.csv    # Auto-created on first run
+```
+
+---
+
+## Configuration
+
+All defaults are in `config.py`. The GUI overrides these at runtime — no need to edit the file between sessions.
+
+| Parameter | Default | Description |
+|---|---|---|
+| `LOOP_COUNT` | 50 | Cycles per pair |
+| `IDLE_SECONDS` | 5 | Wait between cycles |
+| `CALL_SECONDS` | 15 | Call window duration |
+| `CALL_END_WAIT` | 3 | Grace period after hang-up |
+| `DRY_RUN` | `True` | Simulate ADB (no real devices needed) |
+
+---
+
+## Background
+
+Built to automate voice call regression testing on Android devices — replacing a fully manual process that required an operator to place and monitor calls throughout each test session. Chorus runs unattended, handles both pairs in parallel, and produces a clean CSV report at the end.
+
+---
+
+## License
+
+MIT
