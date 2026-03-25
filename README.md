@@ -64,13 +64,6 @@ IDLE (5 s) → start_call (MO) → answer_call (MT)
           → repeat
 ```
 
-## SDM log pulling (Exynos only)
-
-- Triggered when on-device log dir exceeds `SDM_CHUNK_SIZE_MB` (default 300 MB).
-- Set `SDM_PULL_PER_CALL=True` to pull after every call.
-- Local destination: `logs/exynos/cycle_NNN_TIMESTAMP/`
-- Source dir is deleted on device after each pull to free storage.
-
 ## CSV columns
 
 `timestamp, pair, dut_mo_serial, dut_mt_serial, cycle, result, error_type,
