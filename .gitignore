@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+
+# PyInstaller
+build/
+dist/
+*.spec
+Chorus*.exe
+
+# Data files (device-specific, auto-generated)
+chorus_config.json
+phone_history.json
+data/
+
+# Logs (auto-generated)
+Logs/
+
+# OS files
+.DS_Store
+Thumbs.db
