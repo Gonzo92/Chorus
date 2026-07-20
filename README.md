@@ -226,4 +226,4 @@ Built to automate voice call regression testing on Android devices — replacing
 
 ## License
 
-Created by m.galazka2
+Created by Mateusz Gałązka
