@@ -1,0 +1,14 @@
+{
+  "devices": {
+    "dut_MO": "R37L402KPDR",
+    "dut_MT": "R37L402KPYD",
+    "ref_MO": "R3CY40QJQ7J",
+    "ref_MT": "R3CY40QJRMR"
+  },
+  "phone_numbers": {
+    "dut": "506879298",
+    "ref": "506879545"
+  },
+  "gps_source": "",
+  "apk_paths": []
+}

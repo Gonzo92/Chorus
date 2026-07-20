@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+
+# Data files (device-specific)
+data/chorus_config.json
+data/phone_history.json
+
+# Logs (auto-generated)
+Logs/
+
+# OS files
+.DS_Store
+Thumbs.db
